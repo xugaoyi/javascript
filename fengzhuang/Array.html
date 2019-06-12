@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>封装原有Array数组方法</title>
+</head>
+<body>
+
+	<script type="text/javascript">
+
+		//最新的 ECMAScript 标准定义了 7 种数据类型:
+		/* - 6 种原始类型:
+			Boolean
+			Null
+			Undefined
+			Number
+			String
+			Symbol (ECMAScript 6 新定义)
+		和 Object*/
+
+		//参考：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures
+
+
+		//concat数组拼接，并返回结果
+		Array.prototype.concatX = function(){
+			//console.log(this); // this 谁调用就指向谁
+			//console.log(arguments[1]);//arguments对象用于接收函数内传入的所有参数，它不是一个 Array 。它类似于Array，但除了length属性和索引元素之外没有任何Array属性
+
+			var arr = this.slice(0);//为了不改变原数组，slice方法返回一个新的数组
+			for (var i = 0; i < arguments.length; i++) {
+				if (Array.isArray(arguments[i])) { //是否为数组
+					for (var y = 0; y < arguments[i].length; y++) {
+						arr.push(arguments[i][y]);
+					}
+				} else {
+					arr.push(arguments[i]);
+				}
+			}
+			return arr;
+		}
+
+		//字符串concat，字符串的拼接
+		String.prototype.concatX = function(){
+			var str = this;
+			for (var i = 0; i < arguments.length; i++) {
+				str += arguments[i]
+			}
+			return str;
+		}
+
+
+		//concat测试
+		var data1 = ['11'];
+		//var data1 = '11';
+		var data2 = ["22", "33"];
+		var data3 = '我是字符串';
+		var data4 = {'a':'2'};
+		var data5 = 55;
+		var data6 = null;
+		var data7 = true;
+		var data8;// 同 data8 =undefined;
+
+		var newData1 = data1.concat(data2,data3,data4,data5,data6,data7,data8);//data1可以是数组和字符串类型（concat同时是数组和字符串的方法）
+		console.log(newData1);
+
+		var newData2 = data1.concatX(data2,data3,data4,data5,data6,data7,data8);
+		console.log(newData2);
+
+
+
+
+
+		//数组copyWithin方法
+		Array.prototype.copyWithinX = function(){
+			var newArr = [];
+			var target = arguments[0] ? Math.floor(arguments[0]) : 0; //默认为0
+			var start = arguments[1] ? Math.floor(arguments[1]) : 0; //默认为0
+			var end = arguments[2] || arguments[2] == 0 ? Math.floor(arguments[2]) : this.length;//默认为数组长度
+
+			if(start < 0 ) return false; //开始参数不能小于0
+
+			if(end > this.length){//当传入结束参数大于数组长度时
+				end = this.length;
+			}
+
+			if (arguments[2] < 0) {//当传入结束参数为负数时
+				end = this.length - Math.abs(arguments[2]);//为负数时 表示倒数
+			}
+
+			for (var i = start; i < end; i++) {
+				newArr.push(this[i]);
+			}
+			for (var i = 0; i < newArr.length; i++) {
+				if (target+i < this.length) { //不改变原数组的长度
+					this[target+i] = newArr[i];
+				}
+			}
+
+			return this;
+		}
+
+		//copyWithin测试
+		var fruits1 = ["00", "11", "22", "33", "44", "55"];
+		fruits1.copyWithin(1,2,-3.7);
+		console.log(fruits1);
+
+		var fruits2 = ["00", "11", "22", "33", "44", "55"];
+		fruits2.copyWithinX(1,2,-3.7);
+		console.log(fruits2);
+
+
+	</script>
+</body>
+</html>

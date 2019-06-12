@@ -22,12 +22,12 @@
 
 		//concat数组拼接，并返回结果
 		Array.prototype.concatX = function(){
-			//console.log(this); // this 谁调用就指向谁
-			//console.log(arguments[1]);//arguments对象用于接收函数内传入的所有参数，它不是一个 Array 。它类似于Array，但除了length属性和索引元素之外没有任何Array属性
+			// this 谁调用就指向谁
+			// arguments对象用于接收函数内传入的所有参数，它不是一个 Array 。它类似于Array，但除了length属性和索引元素之外没有任何Array属性
 
 			var arr = this.slice(0);//为了不改变原数组，slice方法返回一个新的数组
 			for (var i = 0; i < arguments.length; i++) {
-				if (Array.isArray(arguments[i])) { //是否为数组
+				if (Array.isArray(arguments[i])) {
 					for (var y = 0; y < arguments[i].length; y++) {
 						arr.push(arguments[i][y]);
 					}
@@ -71,26 +71,22 @@
 
 		//数组copyWithin方法
 		Array.prototype.copyWithinX = function(){
-			var newArr = [];
-			var target = arguments[0] ? Math.floor(arguments[0]) : 0; //默认为0
-			var start = arguments[1] ? Math.floor(arguments[1]) : 0; //默认为0
-			var end = arguments[2] || arguments[2] == 0 ? Math.floor(arguments[2]) : this.length;//默认为数组长度
+			var newArr = [],
+				thisL = this.length,
+				target = arguments[0] ? Math.floor(arguments[0]) : 0, //默认为0
+				start = arguments[1] ? Math.floor(arguments[1]) : 0, //默认为0
+				end = arguments[2] || arguments[2] == 0 ? Math.floor(arguments[2]) : thisL;//默认为数组长度
 
-			if(start < 0 ) return false; //开始参数不能小于0
-
-			if(end > this.length){//当传入结束参数大于数组长度时
-				end = this.length;
-			}
-
-			if (arguments[2] < 0) {//当传入结束参数为负数时
-				end = this.length - Math.abs(arguments[2]);//为负数时 表示倒数
-			}
+			if (Math.abs(target) > thisL || start < 0) return false; //目标参数不能大于数组长度，开始参数不能小于0
+			if (end > thisL) end = thisL; //结束参数大于数组长度时
+			if (target < 0 ) target = thisL - Math.abs(target);//目标参数为负数时 表示倒数
+			if (end < 0) end = thisL - Math.abs(end);//结束参数为负数时 表示倒数
 
 			for (var i = start; i < end; i++) {
 				newArr.push(this[i]);
 			}
 			for (var i = 0; i < newArr.length; i++) {
-				if (target+i < this.length) { //不改变原数组的长度
+				if (target+i < thisL) { //不改变原数组的长度
 					this[target+i] = newArr[i];
 				}
 			}
@@ -100,11 +96,11 @@
 
 		//copyWithin测试
 		var fruits1 = ["00", "11", "22", "33", "44", "55"];
-		fruits1.copyWithin(1,2,-3.7);
+		fruits1.copyWithin(-5,0,1);
 		console.log(fruits1);
 
 		var fruits2 = ["00", "11", "22", "33", "44", "55"];
-		fruits2.copyWithinX(1,2,-3.7);
+		fruits2.copyWithinX(-5,0,1);
 		console.log(fruits2);
 
 

@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
 	<title>封装原有Array数组方法</title>
 </head>
 <body>
 
 	<script type="text/javascript">
-
-		//最新的 ECMAScript 标准定义了 7 种数据类型:
-		/* - 6 种原始类型:
-			Boolean
-			Null
-			Undefined
-			Number
-			String
-			Symbol (ECMAScript 6 新定义)
-		和 Object*/
-
-		//参考：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures
-
 
 		//concat数组拼接，并返回结果
 		Array.prototype.concatX = function(){
@@ -48,6 +36,19 @@
 		}
 
 
+		//最新的 ECMAScript 标准定义了 7 种数据类型:
+		/* - 6 种原始类型:
+			Boolean
+			Null
+			Undefined
+			Number
+			String
+			Symbol (ECMAScript 6 新定义)
+		和 Object*/
+
+		//参考：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures
+
+
 		//concat测试
 		var data1 = ['11'];
 		//var data1 = '11';
@@ -57,7 +58,7 @@
 		var data5 = 55;
 		var data6 = null;
 		var data7 = true;
-		var data8;// 同 data8 =undefined;
+		var data8;// 同 data8 = undefined;
 
 		var newData1 = data1.concat(data2,data3,data4,data5,data6,data7,data8);//data1可以是数组和字符串类型（concat同时是数组和字符串的方法）
 		console.log(newData1);
@@ -95,13 +96,13 @@
 		}
 
 		//copyWithin测试
-		var fruits1 = ["00", "11", "22", "33", "44", "55"];
-		fruits1.copyWithin(-5,0,1);
-		console.log(fruits1);
+		var copyW1 = ["00", "11", "22", "33", "44", "55"];
+		copyW1.copyWithin(-5,0,1);
+		console.log(copyW1);
 
-		var fruits2 = ["00", "11", "22", "33", "44", "55"];
-		fruits2.copyWithinX(-5,0,1);
-		console.log(fruits2);
+		var copyW2 = ["00", "11", "22", "33", "44", "55"];
+		copyW2.copyWithinX(-5,0,1);
+		console.log(copyW2);
 
 
 	</script>

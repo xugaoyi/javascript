@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>闭包</title>
+	<style type="text/css">
+		body {
+		  font-family: Helvetica, Arial, sans-serif;
+		  font-size: 12px;
+		}
+
+		h1 {
+		  font-size: 1.5em;
+		}
+
+		h2 {
+		  font-size: 1.2em;
+		}
+	</style>
+</head>
+<body>
+
+	<button id="size-12">12</button>
+	<button id="size-14">14</button>
+	<button id="size-16">16</button>
+	<h1>H1字体大小</h1>
+	<h2>H2字体大小</h2>
+
+
+
+
+	<p id="help">请输入如下信息</p>
+	<p>E-mail: <input type="text" id="email" name="email"></p>
+	<p>Name: <input type="text" id="name" name="name"></p>
+	<p>Age: <input type="text" id="age" name="age"></p>
+	
+
+	<script type="text/javascript">
+		// 在循环中创建闭包：一个常见错误
+
+		//在 ECMAScript 2015 引入 let 关键字 之前，在循环中有一个常见的闭包创建问题。参考下面的示例：
+
+		/*function showHelp(help) {
+		  document.getElementById('help').innerHTML = help;
+		}
+
+		function setupHelp() {
+		  var helpText = [
+		      {'id': 'email', 'help': 'Your e-mail address'},
+		      {'id': 'name', 'help': 'Your full name'},
+		      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+		    ];
+
+		  for (var i = 0; i < helpText.length; i++) {
+		    var item = helpText[i];
+		    document.getElementById(item.id).onfocus = function() {
+		      showHelp(item.help);
+		    }
+		  }
+		}
+
+		setupHelp();*/
+
+		// 解决这个问题的一种方案是使用更多的闭包：特别是使用前面所述的函数工厂：
+		/*function showHelp(help) {
+		  document.getElementById('help').innerHTML = help;
+		}
+
+		function makeHelpCallback(help) {
+		  return function() {
+		    showHelp(help);
+		  };
+		}
+
+		function setupHelp() {
+		  var helpText = [
+		      {'id': 'email', 'help': 'Your e-mail address'},
+		      {'id': 'name', 'help': 'Your full name'},
+		      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+		    ];
+
+		  for (var i = 0; i < helpText.length; i++) {
+		    var item = helpText[i];
+		    document.getElementById(item.id).onfocus = makeHelpCallback(item.help);
+		  }
+		}
+
+		setupHelp();*/
+
+		//另一种方法使用了匿名闭包：
+		/*function showHelp(help) {
+		  document.getElementById('help').innerHTML = help;
+		}
+
+		function setupHelp() {
+		  var helpText = [
+		      {'id': 'email', 'help': 'Your e-mail address'},
+		      {'id': 'name', 'help': 'Your full name'},
+		      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+		    ];
+
+		  for (var i = 0; i < helpText.length; i++) {
+		    (function() {
+		       var item = helpText[i];
+		       document.getElementById(item.id).onfocus = function() {
+		         showHelp(item.help);
+		       }
+		    })(); // 马上把当前循环项的item与事件回调相关联起来
+		  }
+		}
+
+		setupHelp();*/
+
+
+		//避免使用过多的闭包，可以用let关键词：
+		function showHelp(help) {
+		  document.getElementById('help').innerHTML = help;
+		}
+
+		function setupHelp() {
+		  var helpText = [
+		      {'id': 'email', 'help': 'Your e-mail address'},
+		      {'id': 'name', 'help': 'Your full name'},
+		      {'id': 'age', 'help': 'Your age (you must be over 16)'}
+		    ];
+
+		  for (var i = 0; i < helpText.length; i++) {
+		    let item = helpText[i];
+		    document.getElementById(item.id).onfocus = function() {
+		      showHelp(item.help);
+		    }
+		  }
+		}
+
+		setupHelp();
+
+
+
+
+
+
+		// 闭包的使用
+		function makeSizer(size) {
+		  return function() {
+		  	document.body.style.fontSize = size + 'px';
+		  };
+		}
+
+		var size12 = makeSizer(12);
+		var size14 = makeSizer(14);
+		var size16 = makeSizer(16);
+
+		document.getElementById('size-12').onclick = size12;
+		document.getElementById('size-14').onclick = size14;
+		document.getElementById('size-16').onclick = size16;
+
+
+		// 用闭包模拟私有方法
+		var Counter = (function() {
+		  var privateCounter = 0; // 私有变量
+		  function changeBy(val) { // 私有方法
+		    privateCounter += val;
+		  }
+		  return {
+		    increment: function() {
+		      changeBy(1);
+		    },
+		    decrement: function() {
+		      changeBy(-1);
+		    },
+		    value: function() {
+		      return privateCounter;
+		    }
+		  }   
+		})();
+
+		console.log(Counter.value()); /* logs 0 */
+		Counter.increment();
+		Counter.increment();
+		console.log(Counter.value()); /* logs 2 */
+		Counter.decrement();
+		console.log(Counter.value()); /* logs 1 */
+
+
+		//这个环境中包含两个私有项：名为 privateCounter 的变量和名为 changeBy 的函数。这两项都无法在这个匿名函数外部直接访问。必须通过匿名函数返回的三个公共函数访问。
+
+
+
+
+	/*
+		var Counter1 = makeCounter();
+		var Counter2 = makeCounter();
+		console.log(Counter1.value()); // logs 0
+		Counter1.increment();
+		Counter1.increment();
+		console.log(Counter1.value()); // logs 2
+		Counter1.decrement();
+		console.log(Counter1.value()); // logs 1
+		console.log(Counter2.value()); // logs 0
+			
+			//Counter2 不受 Counter1 影响
+
+
+		*/ 
+
+
+
+
+	</script>
+</body>
+</html>

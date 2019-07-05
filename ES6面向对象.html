@@ -10,7 +10,7 @@
 		    	this.grade = props.grade || 1;
 		    }
 		    hello(){ // 在构造函数的原型上定义方法
-		        console.log('你好,'+ this.name +'同学，你在'+ this.grade+'年级');
+		        console.log(`你好,${this.name}同学，你在${this.grade}年级`);
 		    }
 		}
 		
@@ -40,7 +40,7 @@
 		    }
 
 		    getAge() { //对子类添加方法
-		        console.log(this.name +'同学，你今年'+ this.age +'岁');
+		        console.log(`${this.name}同学，你今年${this.age}岁`);
 		    }
 		}
 

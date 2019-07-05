@@ -71,8 +71,20 @@
 
 		/*总结
 
-		1、class定义包含了构造函数constructor和定义在原型对象上的函数hello()
-		
+		1、class定义包含了构造函数constructor和定义在原型对象上的函数
+
+		2、class继承使用 extends ，在子类的构造函数内使用super继承父类的属性
+			
+			使用方法：
+			class 子类 extends 父类{
+				constructor(父类属性1，子类属性){
+					super(父类属性1)
+					this.子类属性 = 子类属性;
+				}
+				子类方法(){
+					
+				}
+			}
 
 		*/
 		

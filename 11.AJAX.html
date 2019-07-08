@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AJAX</title>
+	<script type="text/javascript">
+
+
+		function success(text) {
+		    var textarea = document.getElementById('test-response-text');
+		    textarea.value = text;
+		}
+
+		function fail(code) {
+		    var textarea = document.getElementById('test-response-text');
+		    textarea.value = 'Error code: ' + code;
+		}
+
+		function request(){
+
+			// 新建XMLHttpRequest对象
+			var request; 
+			if (window.XMLHttpRequest) {
+			    request = new XMLHttpRequest();
+			} else { //兼任IE
+			    request = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+
+
+
+			request.onreadystatechange = function () { // 状态发生变化时，函数被回调
+			    if (request.readyState === 4) { // 请求完成
+			        // 判断响应结果:
+			        if (request.status === 200) {
+			            // 成功，通过responseText拿到响应的文本:
+			            return success(request.responseText);
+			        } else {
+			            // 失败，根据响应码判断失败原因:
+			            return fail(request.status);
+			        }
+			    } else {
+			        // HTTP请求还在继续...
+			// 发送请求:
+			    }
+			}
+
+			request.open('GET', '/api/categories'); //open()方法有3个参数，第一个参数指定是GET还是POST，第二个参数指定URL地址，第三个参数指定是否使用异步，默认是true，所以不用写。
+			request.send();
+
+			alert('请求已发送，请等待响应...');
+
+
+			/*传输数据给后台：
+			GET：
+			//get方法的时候通过url进行传输数据给后台
+				xhr.open('get','1.get.php?username='+ encodeURI('张三') +'&age=18&'+ new Date().getTime(),true);
+
+			//get方法传输数据的问题处理
+			 	//1) 缓存 在url后面连接一个随机数 或者 时间戳。
+				//2) 中文乱码  编码encodeURI
+			
+
+			POST：
+				//post方式传输时通过send()传输。
+
+				//setRequestHeader设置请求头 
+				xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');//声明发送的数据类型
+				xhr.send('username=李四&age=28');//发送请求
+
+				// post没有缓存问题。
+				//无需encodeURI编码 也不会用中文乱码的问题，因为在setRequestHeader里已经作了处理*/
+		}
+	</script>
+</head>
+<body>
+	<textarea id="test-response-text" rows="5" style="width: 300px; margin: 15px 0; resize: none;">响应结果：</textarea>
+	<button onclick="request()">发送ajax请求</button>
+
+	<br/><br/><br/>
+	<p>输入当前城市:<input type="text" id="city" value="南宁"></p>
+    <button type="submit" onclick="getWeather()">查询</button>
+    <p id="weatherInfo"></p>
+    <script>
+        function getWeather(){
+            let url = 'https://www.apiopen.top/weatherApi?city=';
+            let city = document.getElementById('city');
+            // 获取要查询的城市
+            let newURL = url + city.value; 
+            console.log(newURL);
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState === 4){
+                    if(xhr.status === 200){
+                        return success(xhr.responseText);
+                    }else{
+                        alert('失败！')
+                    }
+                }
+            }
+            xhr.open('GET',newURL);
+            xhr.send();
+        }
+
+        function success(data){
+            let weather = document.getElementById('weatherInfo');
+            let weatherInfo = JSON.parse(data);
+            if(weatherInfo.code ===  200){
+                weather.innerHTML = '查询成功' + '<br>'+
+                                     '当前城市：'+weatherInfo.data.city+ '<br>'+
+                                     '当前温度：'+weatherInfo.data.wendu+'<br>'+
+                                     '气温：'+'最'+weatherInfo.data.forecast[0].high +'，最'+weatherInfo.data.forecast[0].low+'<br>'+
+                                     '天气：'+weatherInfo.data.forecast[0].type+'<br>'+
+                                     '风向：'+weatherInfo.data.forecast[0].fengxiang + weatherInfo.data.forecast[0].fengli+'<br>' +
+                                     '注意：'+weatherInfo.data.ganmao
+            }else{
+                weather.innerText  = weatherInfo.msg;
+            }
+        }
+    </script>
+
+
+	
+	
+
+
+
+	<br/><br/><br/>	<p>跨域demo：</p>
+	<script>
+	//data即getPrice中price.src传入的返回结果, 是一个JSON字符串
+	function showPrice(data){ //此函数的调用为后台返回: showPrice({参数})  注意price.src链接后面定义了函数名‘?callback=showPrice’
+		console.log(data);
+	    var p=document.getElementById("test-jsonp");
+	    p.innerHTML="当前价格："+
+	    data['0000001'].name +': ' + 
+	    data['0000001'].price + '；' +
+	    data['1399001'].name + ': ' +
+	    data['1399001'].price;
+	}
+
+	//点击按钮时, 从'http://api.money.126.net/data/feed/0000001,1399001'请求JSON字符串,并把请求结果传给自定义函数showPrice()
+	function getPrice(){    
+	    var price=document.createElement('script');
+	    var head=document.getElementsByTagName("head")[0];
+	    price.src= 'http://api.money.126.net/data/feed/0000001,1399001?callback=showPrice';
+	    head.appendChild(price);
+	}
+	</script>
+	<p id="test-jsonp">跨域请求结果</p>
+	<button type='button' onclick="getPrice()">跨域请求</button>
+
+
+
+</body>
+</html>

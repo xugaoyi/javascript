@@ -25,7 +25,7 @@
 			优点：即使前面的代码没有执行完，也不影响后面代码的执行。
 
 			缺点：
-			1、对编程人员不友好，给阅读代码带来一些困扰。（因为异步的缘故，代码的执行顺序并会有一些错乱）
+			1、对编程人员不友好，给阅读代码带来一些困扰。（因为异步的缘故，代码的执行顺序并会有一些乱）
 			function callback() {
 			    console.log('Done');
 			}
@@ -60,13 +60,13 @@
 			rejected：操作失败
 
 			这些状态由编程人员来设置。
-			然后根据返回的状态成功与否来决定是执行then还是catch
+			然后根据返回的状态成功与否来决定是执行then里的方法，或者捕获方法catch
 
 		*/
 
 		new Promise((resolve,reject) => { //参数名可自定义
-				//resolve:函数，可传参到then方法，当我们调用该函数时，可以把当前Promise对象的任务状态改成resolved（成功）
-				//reject:函数，可传参到then方法，当我们调用该函数时，可以把当前Promise对象的任务状态改成rejected（失败）
+				//resolve:函数，可传参到then方法，当我们调用该函数时，可以把当前Promise对象的任务状态设成resolved（成功）
+				//reject:函数，可传参到then方法，当我们调用该函数时，可以把当前Promise对象的任务状态设成rejected（失败）
 
 				//要执行的异步任务
 				setTimeout(() =>{
@@ -98,13 +98,13 @@
 				()=>{ //处理成功时的方法
 					console.log(3)
 				},
-				()=>{ //处理成功时的方法
+				()=>{ //处理失败时的方法
 					console.log(4)
 				}
 			)
 
 			//then函数执行后会返回一个新的Promise对象
-				//如果ther没有传入处理函数，那么会返回一个继承了上一个处理状态的Promise对象
+				//如果then没有传入处理函数，那么会返回一个继承了上一个处理状态的Promise对象
 				new Promise((resolve,reject) => {
 					resolve()
 				}).then().then(//第二个then会继承上一个promise返回的状态，这里继承成功状态，打印1
@@ -270,7 +270,7 @@
 
 
 
-			//以下两个方法可省去这样的操作 new Promise((resolve,reject) =>{resolve();}).then()
+			//以下两个方法可直接返回状态，不需要new Promise这样的操作：new Promise((resolve,reject) =>{resolve();}).then()
 
 			// Promise.resolve()
 			Promise.resolve(1).then(v=>{ //打印1
@@ -288,13 +288,13 @@
 
 
 			/*
-			最终的解决方案 ES7的 async/await ,省去then方法。
+			最终异步操作的解决方案 ES6 Promise、 ES7 async/await ,省去then方法。
 			*/
 
 			async function fn(){  //在函数前面添加async关键字声明此函数为异步函数，然后才能在内部使用await
 				try{
-					var v = await getValue(10);
-					console.log(v);
+					var v = await getValue(10); //使用await调用另一个异步函数
+					console.log(v);//获取到数据才会执行
 
 					var w = await getValue(20);
 					console.log(w);

@@ -293,7 +293,7 @@
 
 			async function fn(){  //在函数前面添加async关键字声明此函数为异步函数，然后才能在内部使用await
 				try{
-					var v = await getValue(10); //使用await调用另一个异步函数
+					var v = await getValue(10); //使用await调用另一个异步函数，即Promise对象，并返回结果赋值给变量
 					console.log(v);//获取到数据才会执行
 
 					var w = await getValue(20);
@@ -321,6 +321,35 @@
 			}
 
 			fn();
+
+
+
+
+
+			//结合 Promise.all() 使用
+			let fn2 = async () =>{
+				const a = await getAllValue();
+				console.log(a)
+			}
+			let getAllValue = () => {
+				let p1 = new Promise((resolve, reject) => {
+					setTimeout(()=>{
+						resolve('数据1');
+					},1000)
+				})
+
+				let p2 = new Promise((resolve, reject) => {
+					setTimeout(()=>{
+						resolve('数据2');
+					},2000)
+				})
+
+				return Promise.all([p1,p2]);// Promise.all会等待p1和p2执行完后再执行，返回p1和p2传入参数的集合
+			}
+
+			fn2();
+
+			
 
 
 	</script>

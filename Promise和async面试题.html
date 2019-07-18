@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Promise与async/await面试题</title>
+	<script type="text/javascript">
+		//请写出如下代码打印的顺序
+		let sleep = s => {
+			let time1 = Date.now();//ES6获取时间戳 同 new Date().getTime()
+			while(Date.now() - time1 < s){} //while循环为括号内的条件为true时执行表达式，一直到条件为fasle，这里共循环约2秒
+			console.log("A",`end sleep ${s}ms`);
+		}
+
+		let async1 = async () => {
+			await async2();
+			console.log("B","async1 end");
+		}
+
+		let async2 = async () => {
+			console.log("C",'async2 start');
+			await Promise.resolve();
+			console.log('D','async2 end');
+		}
+
+		setTimeout(()=>{// setTimeout时间设为0时，会在所有代码执行完成后才执行
+			console.log("1",'setTimeout-0');
+		},0)
+
+		new Promise((resolve,reject) => { 
+			reject();
+			console.log('2','promise1');
+		}).catch(() => console.log('3','promise2'));
+
+		async1();
+		sleep(2000);
+
+		//2 C (两秒后) A 3 D B 1
+	</script>
+</head>
+<body>
+
+</body>
+</html>

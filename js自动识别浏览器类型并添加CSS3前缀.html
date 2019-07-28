@@ -31,9 +31,9 @@
 
 		//本demo适用于项目中多处出现js添加css3样式时的封装
 
-		let elementStyle = document.createElement('div').style // 创建一个空元素获取其style对象（style对象包含所有样式属性）
+		let elementStyle = document.createElement('div').style // 创建一个空元素获取其style对象，style对象包含浏览器下支持的所有样式属性
 
-		console.log(elementStyle);
+		console.log(elementStyle);// style对象
 		
 
 		let vendor = (() => {
@@ -50,31 +50,21 @@
 		      return key // 返回浏览器前缀标识
 		    }
 		  }
-
-		  return false // 如何全都不符合则返回false
 		})()
 
-		
-
 		function prefixStyle(style) {
-		  if (vendor === false) {
-		    return false
-		  }
-
-		  if (vendor === 'standard') {
+		  if (!vendor || vendor === 'standard') {
 		    return style
 		  }
-
-		  console.log(vendor)
-
 		  return vendor + style.charAt(0).toUpperCase() + style.substr(1) // 返回添加了浏览器前缀并拼接的CSS3样式
 		}
 
 
 		// 使用
 		const transition = prefixStyle('transition');
-		console.log(transition)
 
+		console.log(transition);
+		
 		document.querySelector('div').style[transition] = 'width 2s, height 2s, transform 2s';
 		
 	</script>

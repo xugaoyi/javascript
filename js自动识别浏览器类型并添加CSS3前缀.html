@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>js添加CSS3样式时自动识别浏览器类型并添加相应前缀</title>
+	<style type="text/css">
+		div{
+			width: 100px;
+		    height: 100px;
+		    background: #92B901;
+		    color: #ffffff;
+		    position: absolute;
+		    font-weight: bold;
+		    font-size: 15px;
+		    padding: 10px;
+		    float: left;
+		    margin: 50px;
+		    border-radius: 5px;
+		    opacity: 0.4;
+		}
+		div:hover{
+		    width: 200px;
+		    height: 200px;
+			-webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+    		transform: rotate(360deg);
+		}
+	</style>
+</head>
+<body>
+	<div></div>
+	<script type="text/javascript">
+
+		//本demo适用于项目中多处出现js添加css3样式时的封装
+
+		let elementStyle = document.createElement('div').style // 创建一个空元素获取其style对象（style对象包含所有样式属性）
+
+		console.log(elementStyle);
+		
+
+		let vendor = (() => {
+		  let transformNames = {
+		  	Moz: 'MozTransform',
+		    webkit: 'webkitTransform',
+		    O: 'OTransform',
+		    ms: 'msTransform',
+		    standard: 'transform'
+		  }
+
+		  for (let key in transformNames) {
+		    if (elementStyle[transformNames[key]] !== undefined) {
+		      return key // 返回浏览器前缀标识
+		    }
+		  }
+
+		  return false // 如何全都不符合则返回false
+		})()
+
+		
+
+		function prefixStyle(style) {
+		  if (vendor === false) {
+		    return false
+		  }
+
+		  if (vendor === 'standard') {
+		    return style
+		  }
+
+		  console.log(vendor)
+
+		  return vendor + style.charAt(0).toUpperCase() + style.substr(1) // 返回添加了浏览器前缀并拼接的CSS3样式
+		}
+
+
+		// 使用
+		const transition = prefixStyle('transition');
+		console.log(transition)
+
+		document.querySelector('div').style[transition] = 'width 2s, height 2s, transform 2s';
+		
+	</script>
+</body>
+</html>

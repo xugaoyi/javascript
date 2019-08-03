@@ -28,13 +28,15 @@
     }
 
     //使用
+    function $(el){
+      return document.querySelector(el)
+    }
     let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const p1 = document.querySelector('#p1');
-    const p2 = document.querySelector('#p2');
-    const btn = document.querySelector('#btn');
-    p1.innerHTML = arr;
-    btn.onclick = function () {
-      p2.innerHTML = shuffle(arr);
+    const $p2 = $('#p2');
+
+    $('#p1').innerHTML = arr;
+    $('#btn').onclick = function () {
+      $p2.innerHTML = shuffle(arr);
     }
   </script>
 </body>

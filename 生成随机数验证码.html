@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>生成随机数验证码</title>
+</head>
+<body>
+  <input type="button" id="btn" value="生成随机数验证码">
+  <p id="p"></p>
+  <script>
+    let $p = document.getElementById('p')
+    document.querySelector('#btn').onclick = function () {
+      $p.innerHTML = Math.random().toString(16).slice(2, 6).toUpperCase() // 生成4位由数字和大写字母组成的验证码
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>系统时间格式转常见时间格式</title>
+</head>
+<body>
+  系统时间格式：
+  <textarea id="txtar1" cols="30" rows="3"  readonly="readonly" placeholder="系统时间"></textarea>
+  </br></br>
+  格式转换结果：
+  <textarea id="txtar2" cols="30" rows="3"  readonly="readonly" placeholder="转换结果"></textarea>
+
+  <script>
+    // 时间格式化
+    function formatTime(date,format) { // date 数据格式为 date, format 为分隔日期的符号
+
+      let fmt = `yyyy${format}MM${format}dd hh:mm:ss` // 预定格式
+      
+      const o = {
+        // + 正则中的1个或多个
+        'M+': date.getMonth() + 1,
+        'd+': date.getDate(),
+        'h+': date.getHours(),
+        'm+': date.getMinutes(),
+        's+': date.getSeconds()
+      }
+
+      if (/(y+)/.test(fmt)) {
+        // $1 表示正则中的第一个，即(y+)
+        fmt = fmt.replace(RegExp.$1, date.getFullYear()) // replace 替换
+      }
+
+      for (let k in o) {
+        if (new RegExp('('+ k +')').test(fmt)) {
+          fmt = fmt.replace(RegExp.$1, o[k].toString().length === 1 ? '0' + o[k] : o[k])
+        }
+      }
+
+      return fmt
+    }
+
+    //使用
+    const txtar1 = document.querySelector('#txtar1');
+    const txtar2 = document.querySelector('#txtar2');
+
+    setInterval(() => {
+      txtar1.value = new Date()
+      txtar2.value = formatTime(new Date(),'-')
+    }, 1000)
+    
+  </script>
+</body>
+</html>

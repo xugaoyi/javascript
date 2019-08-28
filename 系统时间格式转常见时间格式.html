@@ -15,7 +15,7 @@
 
   <script>
     // 时间格式化
-    function formatTime(date,format) { // date 数据格式为 date, format 为分隔日期的符号
+    function formatTime(date,format = '-') { // date 数据格式为 date, format 为分隔日期的符号,默认为'-'
 
       let fmt = `yyyy${format}MM${format}dd hh:mm:ss` // 预定格式
       
@@ -48,7 +48,7 @@
 
     setInterval(() => {
       txtar1.value = new Date()
-      txtar2.value = formatTime(new Date(),'-')
+      txtar2.value = formatTime(new Date(),'/')
     }, 1000)
     
   </script>

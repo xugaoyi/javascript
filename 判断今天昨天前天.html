@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>判断时间是否为今天昨天前天</title>
+</head>
+<body>
+  <script>
+    function showText(timeString) {
+      let date = new Date(timeString)
+      let today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
+      // today 为今天凌晨的时间
+      let dayTime = 24 * 60 * 60 * 1000
+      let delta = today - date // 得到相差的时间 ms
+      if (delta > 0) {
+        if (delta <= dayTime) {
+          return '昨天'
+        } else if (delta <= 2 * dayTime) {
+          return '前天'
+        }
+      } else if (-delta < dayTime) {
+        return '今天'
+      }
+      return timeString
+    }
+
+    console.log(showText('Wed Aug 28 2019 14:41:37 GMT+0800 (中国标准时间)'))
+  </script>
+</body>
+</html>

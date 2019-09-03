@@ -5,8 +5,8 @@
 https://xugaoyi.github.io/javascript/
 
 如：
-https://xugaoyi.github.io/javascript/阻止事件冒泡关闭弹窗.html
+https://xugaoyi.github.io/javascript/随机打乱数组.html
 ```
 
-[阻止事件冒泡关闭弹窗](https://xugaoyi.github.io/javascript/阻止事件冒泡关闭弹窗.html)
+[随机打乱数组](https://xugaoyi.github.io/javascript/随机打乱数组.html)
 

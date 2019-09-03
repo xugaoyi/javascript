@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>阻止事件冒泡关闭弹窗</title>
+  <style>
+    .modal{
+      background: rgba(0,0,0,0.5);
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .panel{
+      width: 500px;
+      height: 300px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -150px 0 0 -250px;
+      background: #fff;
+      box-shadow: #666 5px 5px 10px;
+    }
+  </style>
+</head>
+<body>
+  <button>显示弹窗</button>
+  <div class="modal">
+    <div class="panel"></div>
+  </div>
+  
+  <script>
+    const $modal = $('.modal')
+
+    // 显示弹窗
+    $('button').onclick = function() {
+      $modal.style.display = 'block'
+    }
+
+    // 关闭弹窗
+    $modal.onclick = function() {
+      this.style.display = 'none'
+    }
+
+    // 点击弹窗时阻止事件冒泡
+    $('.panel').onclick = function(e) {
+      e.stopPropagation()
+    }
+
+    //获取元素
+    function $(el) {
+      return document.querySelector(el)
+    }
+
+    /**
+     * 在vue中：    弹窗元素'panel'添加 @click.stop ,不指定事件。
+     * 在小程序中：  弹窗元素'panel'添加 catchtap ,不指定事件。
+     */
+  </script>
+</body>
+</html>

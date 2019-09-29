@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>一个小算法</title>
+</head>
+<body>
+  <script>
+    /** 
+     * 有A、B、C、D四个人，要在夜里过一座桥。他们通过这座桥分别需要耗时1、2、5、10分钟，只有一支手电（过桥必须用手电），
+     * 并且同时最多只能两个人一起过桥。
+     * 请问，这四个人都过桥用的最短时间是多少？
+    */
+    
+    // 算法： 把想法用代码的形式算出来，并且在初始参数变化时依然可以按照既定规律算出正确的结果。
+    // 某些算法是有规律可循的。
+    // 算法代码就是让代码 按照既定规律（想法）来计算出结果
+
+    // 情况1，过桥后可以把手电仍过来
+    var arr = [1,2,5,10] // 要过桥的
+    const P = 2 // 每次过桥人数
+    let t = 0 // 累计用时
+    arr.sort((x,y) => { // 保证数组是从大到小排序,sort方法会改变原数组
+      return y-x
+    })
+    for (let i = 0, arrL = arr.length; i < arrL; i+=P) {
+      if (i > arrL) {
+        break
+      }
+      t += arr[i]
+    }
+    console.log('最短用时：'+ t)
+
+
+    // 情况2，过桥后需要一个人往回送手电
+    let l = [1,2,5,10] // 未过桥的
+    let r = [] // 已过桥的
+    const PER = 2 // 每次过桥人数
+    let time = 0 // 累计用时
+
+    // 保证从小到大排序
+    arrSort(l)
+
+    // 数组从小到大排序
+    function arrSort(arr){
+      arr.sort((x,y) => {
+        return x-y
+      })
+    }
+
+    // 过
+    let sign = true
+    A()
+    function A() {
+      let arr = []
+      if (r.length === 0) { // 第一次过桥
+        arr = l.splice(0,PER)                       // slice参数从第几位开始截取到第几位，不会改变原数组。splice从第几位开始截取几个，第三个参数为要插入的数据，会改变原数组
+      } else {
+        if (sign) {
+          arr = l.splice(l.length - PER, PER)
+          sign = false
+        } else {
+          arr = l.splice(0,1)
+          let arr2 = l.splice(l.length - PER + 1, (PER -1))
+          arr.push(...arr2)
+          sign = true
+        }
+      }
+
+      r.push(...arr)
+      time += arr[arr.length - 1] // 用时
+      arrSort(r)
+      console.log('过');console.log(l);console.log(r);console.log(time);console.log('');
+      if (l.length !== 0) {
+        B()
+      }
+    }
+
+    // 回
+    function B() {
+      let arr = r.splice(0,1) // 回桥的人
+      l.push(...arr)
+      time += arr[0]  // 用时
+      arrSort(l)
+      console.log('回');console.log(l);console.log(r);console.log(time);console.log('');
+      A()
+    }
+    console.log('最短用时：'+ time)
+  </script>
+</body>
+</html>

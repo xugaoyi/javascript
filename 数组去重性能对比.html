@@ -12,7 +12,7 @@
   <script>
     // 参考：https://www.cnblogs.com/wisewrong/p/9642264.html
 
-    let arr1 = Array.from(new Array(1000000), (x, index) => { // 创建一个 1 ~ 10w 的数组
+    let arr1 = Array.from(new Array(1000000), (x, index) => { // 创建一个 1 ~ 10w 的数组，Array.from为ES6语法
       return index
     })
 
@@ -63,7 +63,7 @@
       // 方法5，ES6的Set数据结构构，耗时约20ms，性能高，代码简洁
       // return Array.from(new Set([...a, ...b]))
 
-      // 方法6，耗时约16ms，所有方法中 性能最高！ (千万级数据量下效率比方法5高4倍)
+      // 方法6，耗时约16ms，所有方法中 性能最高！ (千万级数据量下效率比方法5高4倍，for...of 为ES6语法)
       let result = []
       let obj = {}
       for (let i of arr) {

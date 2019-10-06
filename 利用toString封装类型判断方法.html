@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>利用toString封装类型判断方法</title>
+</head>
+
+<body>
+  <script>
+    var type = function (o) {
+      var s = Object.prototype.toString.call(o)
+      return s.match(/\[object (.*?)\]/)[1].toLowerCase()
+    };
+
+    ['Null',
+    'Undefined',
+    'Object',
+    'Array',
+    'String',
+    'Number',
+    'Boolean',
+    'Function',
+    'RegExp'
+    ].forEach(function (t) {
+      // 这里的type为上面定义的type方法，因为方法也是对象，所有可以使用['']为其创建新的方法
+      type['is' + t] = function (o) {
+        return type(o) === t.toLowerCase();
+      };
+    });
+
+    console.log(type.isObject({})) // true
+    console.log(type.isNumber('')) // false
+    console.log(type.isRegExp(/abc/)) // true
+  </script>
+</body>
+
+</html>

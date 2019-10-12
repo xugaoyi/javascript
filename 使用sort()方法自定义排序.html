@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>使用sort()方法自定义排序</title>
+</head>
+
+<body>
+  <script>
+    // 自定义排序
+    var arr = [
+      { day: '星期一' }, { day: '星期六' }, { day: '星期二' }
+    ]
+    arr.sort(function (o1, o2) { // 返回值大于0，则o1排于o2之后，否则反之
+      return computedDay(o1.day.charAt(2)) - computedDay(o2.day.charAt(2))
+    })
+    function computedDay(v) {
+      return v === '一' ? 1 : v === '二' ? 2 : v === '三' ? 3 : v === '四' ? 4 : v === '五' ? 5 : v === '六' ? 6 : 7
+    }
+
+    console.log(arr) // { day: '星期一' }, { day: '星期二' }, { day: '星期六' }
+
+  </script>
+</body>
+
+</html>

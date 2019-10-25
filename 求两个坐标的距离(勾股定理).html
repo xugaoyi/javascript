@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>求两个坐标的距离，勾股定理</title>
+  <style>
+    .target {
+      position: absolute;
+      left: 110px;
+      top: 120px;
+    }
+
+    .target span {
+      display: block;
+      width: 5px;
+      height: 5px;
+      background-color: black;
+      float: left;
+      border-radius: 50%;
+    }
+
+    .mouse {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  移动鼠标，自动算出鼠标与目标点的距离。
+  <div class="target"><span></span>目标点</div>
+  <div class="mouse"></div>
+  <script>
+    // 勾股定理：直角三角形的斜边（弦）的平方等于两直角边（勾与股）的平方之和。
+    // 勾股定理在js中的公式:
+    // Math.sqrt(Math.pow(3,2)+Math.pow(4,2)) => 5  '勾三股四弦五'
+
+    // Math对象方法说明：
+    // Math.round() 四舍五入，Math.sqrt()开平方根，Math.pow() 次方运算
+    
+    const $target = $('.target')[0];
+    const $mouse = $('.mouse')[0];
+
+    const targetX = $target.offsetLeft; // 目标点 x轴偏移量
+    const targetY = $target.offsetTop; // 目标点 y轴偏移量
+
+    let dist = 0;
+    document.onmousemove = (e) => {
+      // 算出距离
+      dist = Math.round(Math.sqrt(Math.pow((e.clientX - targetX), 2) + Math.pow((e.clientY - targetY), 2)));
+
+      $mouse.style.left = e.clientX + 'px';
+      $mouse.style.top = e.clientY - 25 + 'px';
+      $mouse.textContent = dist + 'px';
+    }
+
+    function $(el) {
+      return document.querySelectorAll(el)
+    }
+  </script>
+</body>
+
+</html>

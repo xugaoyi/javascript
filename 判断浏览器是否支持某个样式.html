@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>判断浏览器是否支持某个样式</title>
+</head>
+
+<body>
+  <script>
+    function isPropertySupported(property) {
+      if (property in document.body.style) return true; // 判断浏览器是否有该样式模块
+
+      var prefixes = ['Moz', 'Webkit', 'O', 'ms', 'Khtml']; // 前缀
+      var prefProperty = property.charAt(0).toUpperCase() + property.substr(1); // 前缀后面的样式属性首字母大写
+
+      for (var i = 0; i < prefixes.length; i++) {
+        if ((prefixes[i] + prefProperty) in document.body.style) return true; // 添加前缀后判断浏览器是否有该样式模块
+      }
+
+      return false;
+    }
+
+    console.log(isPropertySupported('background-clip'))
+  </script>
+</body>
+
+</html>

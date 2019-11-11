@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>test</title>
+  <link rel="alternate stylesheet" href="css.css" id="styleEl">
+  <style>
+    .draggable-box div {
+      border: 1px solid #333;
+      width: 300px;
+      height: 300px;
+      float: left;
+      margin-right: 30px;
+      text-align: center;
+    }
+
+    .draggable-box .draggable {
+      width: 200px;
+      height: 200px;
+      margin: 50px;
+      line-height: 200px;
+      border: 1px solid #666;
+    }
+    .no-dr{background:indianred;color: white;opacity: 0.8;}
+  </style>
+</head>
+
+<body>
+  <div class="draggable-box">
+    <div class="dropzone">
+      <div class="draggable" draggable="true">
+        该节点可拖拉
+      </div>
+    </div>
+    <div class="dropzone"></div>
+    <div class="dropzone"></div>
+    <div class="dropzone"></div>
+    <div class="no-dr">非可释放目标</div>
+    <br><br><br>
+    <a href="javascript:;">链接、图片默认可拖拉（已过滤）</a>
+  </div>
+
+  <script>
+    // 被拖拉节点
+    var dragged;
+    var dr_box = document.querySelector('.draggable-box');
+
+    // 把链接标签或img标签设置成不可拖拉
+    // var dr_box_a = dr_box.querySelectorAll('a');
+    // for (let i = 0; i < dr_box_a.length; i++) {
+    //   dr_box_a[i].setAttribute('draggable','false')
+    // }
+
+    dr_box.addEventListener('dragstart', function (event) { // 开始拖拉
+      // 保存被拖拉节点
+      dragged = event.target;
+      // 被拖拉节点的背景色变透明
+      event.target.style.opacity = 0.5;
+    }, false);
+
+    dr_box.addEventListener('dragend', function (event) { // 结束拖拉
+      // 被拖拉节点的背景色恢复正常
+      event.target.style.opacity = '';
+    }, false);
+
+    dr_box.addEventListener('dragover', function (event) { // 在某个节点上，持续触发
+      // 防止拖拉效果被重置，允许被拖拉的节点放入目标节点
+      event.preventDefault();
+    }, false);
+
+    dr_box.addEventListener('dragenter', function (event) { // 进入某个节点
+      // 由于a、img默认可拖拉，需过滤
+      if (dragged.className !== 'draggable') {
+        return
+      }
+
+      // 目标节点的背景色变颜色
+      // 由于该事件会冒泡，所以要过滤节点
+      if (event.target.className === 'dropzone') {
+        event.target.style.background = '#eee';
+      }
+    }, false);
+
+    dr_box.addEventListener('dragleave', function (event) { // 离开某个节点
+      // 目标节点的背景色恢复原样
+      if (event.target.className === 'dropzone') {
+        event.target.style.background = '';
+      }
+    }, false);
+
+    dr_box.addEventListener('drop', function (event) { // 在某个节点上释放拖拉
+      // 由于a、img默认可拖拉，需过滤
+      if (dragged.className !== 'draggable') {
+        return
+      }
+
+      // 防止事件默认行为（比如某些元素节点上可以打开链接），
+      event.preventDefault();
+      if (event.target.className === 'dropzone') {
+        // 恢复目标节点背景色
+        event.target.style.background = '';
+        // 将被拖拉节点插入目标节点
+        dragged.parentNode.removeChild(dragged);
+        event.target.appendChild(dragged);
+      }
+    }, false);
+
+  </script>
+</body>
+
+</html>

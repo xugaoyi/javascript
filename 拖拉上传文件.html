@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>拖拉上传文件</title>
+</head>
+
+<body>
+  <div id="output" style="min-height: 200px;border: 1px solid black;">
+    文件拖拉到这里
+  </div>
+
+  <script>
+    // HTML 代码如下
+
+
+    var div = document.getElementById('output');
+
+    div.addEventListener("dragenter", function (event) {
+      div.textContent = '';
+      event.stopPropagation();
+      event.preventDefault();
+    }, false);
+
+    div.addEventListener("dragover", function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }, false);
+
+    div.addEventListener("drop", function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+      console.log(event)
+      
+      var fileList = event.dataTransfer.files;
+      console.log(fileList)
+      if (fileList.length > 0) {
+        var file = fileList[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file)
+        reader.onloadend = function (e) {
+          if (e.target.readyState === FileReader.DONE) {
+            var content = reader.result;
+            
+            div.innerHTML = '<img src="'+ content +'"> File: ' + file.name + '\n\n' + content;
+          }
+        }
+        reader.readAsBinaryString(file);
+      }
+    }, false);
+  </script>
+</body>
+
+</html>
